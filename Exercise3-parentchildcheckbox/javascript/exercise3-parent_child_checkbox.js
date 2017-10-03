@@ -1,46 +1,40 @@
-function CheckboxEvents(parent_checkboxes, child_checkboxes) {
-  this.parent_checkboxes = parent_checkboxes;
-  this.child_checkboxes = child_checkboxes;
+function CheckboxEvent(parentCheckboxes, childCheckboxes) {
+  this.parentCheckboxes = parentCheckboxes;
+  this.childCheckboxes = childCheckboxes;
 }
 
 //Funtion to add listeners to each checkbox
-CheckboxEvents.prototype.init = function(){
-  for(var checkbox of this.parent_checkboxes) {
-    checkbox.addEventListener('click', this.eventHandler());
+CheckboxEvent.prototype.init = function(){
+  for(var checkbox of this.parentCheckboxes) {
+    checkbox.addEventListener('click', this.checkUncheckAll());
   }
-};
-
-//Event Handler Function
-CheckboxEvents.prototype.eventHandler = function() {
-  var _this = this;
-  return function() {
-    _this.checkUncheckAll(this);
-  };
 };
 
 //Function to check or uncheck child lists as per parent element
-CheckboxEvents.prototype.checkUncheckAll = function(sender) {
+CheckboxEvent.prototype.checkUncheckAll = function() {
   var _this = this;
-  var senderId = sender.getAttribute("id");
-  for (var index of _this.child_checkboxes) {
-    var parent= index.getAttribute("data-parent");
-    if(parent == senderId) {
-      index.checked = sender.checked;
-      _this.displayChildList(index);
+  return function() {
+    var clickedParentCheckboxId = this.getAttribute("data-label");
+    for (var checkbox of _this.childCheckboxes) {
+      var parent= checkbox.getAttribute("data-parent");
+      if(parent == clickedParentCheckboxId) {
+        checkbox.checked = this.checked;
+        _this.displayChildList(checkbox);
+      }
     }
-  }
+  };
 };
 
 //Function to display child lists
-CheckboxEvents.prototype.displayChildList = function(sender) {
-  if(sender.checked) {
-    sender.parentElement.style.display = 'block';
-    sender.parentElement.scrollIntoView();
+CheckboxEvent.prototype.displayChildList = function(checkedChildCheckbox) {
+  if(checkedChildCheckbox.checked) {
+    checkedChildCheckbox.parentElement.classList.add('visible');
+    checkedChildCheckbox.parentElement.scrollIntoView();
   }
   else {
-    sender.parentElement.style.display = 'none';
+    checkedChildCheckbox.parentElement.classList.remove('visible');
   }
 };
 
-var CheckboxEventsObject = new CheckboxEvents(document.querySelectorAll("[data-role=parents]"), document.querySelectorAll("[data-role=child]"));
-CheckboxEventsObject.init();
+var CheckboxEventObject = new CheckboxEvent(document.querySelectorAll("[data-role=parents]"), document.querySelectorAll("[data-role=child]"));
+CheckboxEventObject.init();

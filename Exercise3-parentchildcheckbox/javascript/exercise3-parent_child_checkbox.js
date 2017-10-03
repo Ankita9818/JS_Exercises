@@ -15,8 +15,8 @@ CheckboxEvents.prototype.eventHandler = function() {
   var _this = this;
   return function() {
     _this.checkUncheckAll(this);
-  }
-}
+  };
+};
 
 //Function to check or uncheck child lists as per parent element
 CheckboxEvents.prototype.checkUncheckAll = function(sender) {
@@ -29,11 +29,10 @@ CheckboxEvents.prototype.checkUncheckAll = function(sender) {
       _this.displayChildList(index);
     }
   }
-}
+};
 
 //Function to display child lists
 CheckboxEvents.prototype.displayChildList = function(sender) {
-  var _this = this;
   if(sender.checked) {
     sender.parentElement.style.display = 'block';
     sender.parentElement.scrollIntoView();
@@ -41,7 +40,7 @@ CheckboxEvents.prototype.displayChildList = function(sender) {
   else {
     sender.parentElement.style.display = 'none';
   }
-}
+};
 
 var CheckboxEventsObject = new CheckboxEvents(document.querySelectorAll("[data-role=parents]"), document.querySelectorAll("[data-role=child]"));
 CheckboxEventsObject.init();

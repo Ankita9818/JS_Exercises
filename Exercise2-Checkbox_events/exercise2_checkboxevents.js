@@ -1,61 +1,60 @@
 //Constructor object
-function CheckboxEvents(days_of_week, elementNone, maxCheckboxSelected) {
-  this.days_of_week = days_of_week;
-  this.elementNone = elementNone;
+function SelectMaximumCheckbox(weekdaysCheckbox, resetCheckbox, maxCheckboxSelected) {
+  this.weekdaysCheckbox = weekdaysCheckbox;
+  this.resetCheckbox = resetCheckbox;
   this.maxCheckboxSelected = maxCheckboxSelected;
 }
 
 //Funtion to add listeners to each checkbox
-CheckboxEvents.prototype.init = function(){
-  for(var checkbox of this.days_of_week) {
-    checkbox.addEventListener('click', this.eventHandler());
+SelectMaximumCheckbox.prototype.init = function() {
+  for(var checkbox of this.weekdaysCheckbox) {
+    checkbox.addEventListener('click', this.maxCheckboxSelectedEventHandler());
   }
-  this.elementNone[0].addEventListener('click', this.eventHandler());
+  this.resetCheckbox.addEventListener('click', this.resetAllCheckbox());
 };
 
 //Event Handler
-CheckboxEvents.prototype.eventHandler = function() {
+SelectMaximumCheckbox.prototype.maxCheckboxSelectedEventHandler = function() {
   var _this = this;
   var alertMessage = '';
   return function() {
-    var returnArray = _this.countSelectedCheckbox(this);
-    if(this.value == _this.elementNone[0].value) {
-      _this.resetAll();
-    } else if(returnArray.selectedCheckbox > _this.maxCheckboxSelected) {
-      //returnArray.selected_days.length -= 1;
+    var alreadySelectedCheckboxObject = _this.countSelectedCheckbox(this);
+    if(alreadySelectedCheckboxObject.noOfSelectedCheckbox > _this.maxCheckboxSelected) {
       this.checked = false;
-      for(var eachday of returnArray.selected_days) {
+      for(var eachday of alreadySelectedCheckboxObject.checkedWeekdaysCheckbox) {
         if(eachday != this) {
           alertMessage += eachday.value + ' ';
         }
       }
-      alert('Only 3 days can be selected. You have already selected ' + alertMessage);
+      alert('Only ' + _this.maxCheckboxSelected + ' days can be selected. You have already selected ' + alertMessage);
     } else {
-      _this.elementNone[0].checked = false;
+      _this.resetCheckbox.checked = false;
     }
-  }
-}
+  };
+};
 
 //Function to count selected checkbox
-CheckboxEvents.prototype.countSelectedCheckbox = function() {
-  var counter = 0, selected_days_array = [], str ='';
-  for(var index of this.days_of_week) {
-    if(index.checked == 1) {
-      selected_days_array[counter]=index;
-      counter++;
+SelectMaximumCheckbox.prototype.countSelectedCheckbox = function() {
+  var selectedCheckbox = 0, checkedWeekdaysCheckbox_array = [];
+  for(var checkboxIterator of this.weekdaysCheckbox) {
+    if(checkboxIterator.checked == 1) {
+      checkedWeekdaysCheckbox_array[selectedCheckbox]=checkboxIterator;
+      selectedCheckbox++;
     }
   }
-  var returnArray = {selectedCheckbox : counter, selected_days : selected_days_array};
-  return returnArray;
-}
+  var alreadySelectedCheckboxObject = {noOfSelectedCheckbox : selectedCheckbox, checkedWeekdaysCheckbox : checkedWeekdaysCheckbox_array};
+  return alreadySelectedCheckboxObject;
+};
 
 //Function to uncheck checkboxes other than none
-CheckboxEvents.prototype.resetAll = function() {
+SelectMaximumCheckbox.prototype.resetAllCheckbox = function() {
   var _this = this;
-  for(var checkbox of _this.days_of_week) {
-    checkbox.checked = false;
-  }
-}
+  return function() {
+    for(var checkbox of _this.weekdaysCheckbox) {
+      checkbox.checked = false;
+    }
+  };
+};
 
-var CheckboxEventsObject = new CheckboxEvents(document.querySelectorAll("[data-label=weekday]"), document.querySelectorAll("[data-none=none]"),3);
-CheckboxEventsObject.init();
+var selectMaximumCheckboxObject = new SelectMaximumCheckbox(document.querySelectorAll("[data-label=weekday]"), document.querySelector("[data-none=none]"),3);
+selectMaximumCheckboxObject.init();

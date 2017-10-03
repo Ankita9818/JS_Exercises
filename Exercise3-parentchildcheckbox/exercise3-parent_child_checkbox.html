@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <script type="text/javascript" src="javascript/exercise3-parent_child_checkbox.js" defer></script>
+  <title>Exercise 3 - Parent Child Checkbox</title>
+</head>
+<body>
+  <div class="container">
+    <form>
+      <input type="checkbox" id="colors" data-role="parents" value="colors">
+      <label for="colors" value="color">Colors</label><br>
+      <div class="child_list">
+        <input type="checkbox" id="red" data-role="child" data-parent='colors' value="red">
+        <label for="red">Red</label>
+        <input type="checkbox" id="blue" data-role="child" data-parent='colors' value="blue">
+        <label for="blue">Blue</label>
+        <input type="checkbox" id="green" data-role="child" data-parent='colors' value="green">
+        <label for="green">Green</label>
+        <input type="checkbox" id="yellow" data-role="child" data-parent='colors' value="yellow">
+        <label for="yellow">Yellow</label>
+      </div>
+      <input type="checkbox" id="drinks" data-role="parents" value="drinks">
+      <label for="drinks">Drinks</label><br>
+      <div class="child_list">
+        <input type="checkbox" id="coke" data-role="child" data-parent='drinks' value="coke">
+        <label for="coke">Coke</label>
+        <input type="checkbox" id="pepsi" data-role="child" data-parent='drinks' value="pepsi">
+        <label for="pepsi">Pepsi</label>
+        <input type="checkbox" id="dew" data-role="child" data-parent='drinks' value="dew">
+        <label for="dew">Dew</label>
+      </div>
+      <input type="checkbox" id="movies" data-role="parents" value="movies">
+      <label for="movies">Movies</label><br>
+      <div class="child_list">
+        <input type="checkbox" id="dar" data-role="child" data-parent='movies' value="dar">
+        <label for="dar">Dar</label>
+        <input type="checkbox" id="sir" data-role="child" data-parent='movies' value="sir">
+        <label for="sir">Sir</label>
+      </div>
+      <input type="checkbox"  id="bikes" data-role="parents" value="bikes">
+      <label for="bikes">Bikes</label><br>
+      <div class="child_list">
+        <input type="checkbox" id="v-rod" data-role="child" data-parent='bikes' value="v-rod">
+        <label for="v-rod">V-rod</label>
+        <input type="checkbox" id="pulsor" data-role="child" data-parent='bikes' value="pulsor">
+        <label for="pulsor">pulsor</label>
+        <input type="checkbox" id="cbz" data-role="child" data-parent='bikes' value="cbz">
+        <label for="cbz">Cbz</label>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

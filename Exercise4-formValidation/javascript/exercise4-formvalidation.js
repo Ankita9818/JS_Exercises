@@ -1,14 +1,15 @@
 //Object Constructor
-function ValidateForm(formName,checkbox,textArea,selectBox) {
-  this.formName = formName;
-  this.formElement = document.forms[formName];
-  this.checkboxName = checkbox;
-  this.textAreaName = textArea;
-  this.selectBoxName = selectBox;
+function FormValidator(formElementsNamesHash) {
+  this.formName = formElementsNamesHash.form;
+  this.formElement = document.forms[this.formName];
+  this.checkboxName = formElementsNamesHash.checkbox;
+  this.textAreaName = formElementsNamesHash.textArea;
+  this.selectBoxName = formElementsNamesHash.selectBox;
+  this.textAreaMaxLength = formElementsNamesHash.textAreaMaxLength;
 }
 
 //Function to handle submit event
-ValidateForm.prototype.init = function(){
+FormValidator.prototype.init = function(){
   var _this = this;
   this.formElement.addEventListener('submit', function(submitEvent) {
     var formFieldsValidity = _this.formValidationFunction();
@@ -19,50 +20,43 @@ ValidateForm.prototype.init = function(){
 };
 
 //Function to check validity constraints
-ValidateForm.prototype.formValidationFunction = function(event) {
-  if(this.checkForEmptyFields()) {
-    if(this.checkForEmptySelectBox()) {
-      if(this.checkForUncheckedNotificationCheckbox()) {
-        if(this.checkForTextAreaLength()) {
-          alert('Successfull Submission');
-          return true;
-        }
-      }
-    }
-  }
-  alert('Unsuccessful Submission');
-  return false;
+FormValidator.prototype.formValidationFunction = function(event) {
+  var valid = true;
+  valid = this.validateEmptyFields();
+  valid = this.validateEmptySelectBox();
+  valid = this.validateUncheckedNotificationCheckbox();
+  valid = this.validateTextAreaLength();
+  return valid;
 };
 
 //Function to check for empty fields
-ValidateForm.prototype.checkForEmptyFields = function() {
+FormValidator.prototype.validateEmptyFields = function() {
+  var emptyFields = false;
   var emptyAlertMessage = '';
   for(var formField of this.formElement.elements) {
-    if (formField.value == "")
-    {
-      emptyAlertMessage = formField.name + ' cant be empty ';
+    if (formField.value == "") {
+      emptyAlertMessage = this.capitalizeFirstLetter(formField.name) + ' cant be empty ';
       alert(emptyAlertMessage);
-      return false;
+      emptyFields = true;
     }
   }
-  return true;
+  return(!emptyFields);
 };
 
 //Function to check whether select box is empty or not
-ValidateForm.prototype.checkForEmptySelectBox = function() {
+FormValidator.prototype.validateEmptySelectBox = function() {
   var timezoneSelectBox = this.formElement[this.selectBoxName];
   if(timezoneSelectBox.selectedIndex <= 0) {
-    alert(timezoneSelectBox.name + ' cant be empty');
+    alert(this.capitalizeFirstLetter(timezoneSelectBox.name) + ' cant be empty');
     return false;
   }
   return true;
 };
 
 //Function to check whether checkbox is checked or not
-ValidateForm.prototype.checkForUncheckedNotificationCheckbox = function() {
+FormValidator.prototype.validateUncheckedNotificationCheckbox = function() {
   var notificationCheckbox = this.formElement[this.checkboxName];
-  if (!notificationCheckbox.checked)
-  {
+  if (!notificationCheckbox.checked)  {
     alert('Please check the checkbox to receive notifications');
     return false;
   }
@@ -70,15 +64,32 @@ ValidateForm.prototype.checkForUncheckedNotificationCheckbox = function() {
 };
 
 //function to check for minimum length of text area content
-ValidateForm.prototype.checkForTextAreaLength = function() {
+FormValidator.prototype.validateTextAreaLength = function() {
   var aboutMeTextArea = this.formElement[this.textAreaName];
-  if(aboutMeTextArea.value.length <= 50) {
-    alert('minimum 50 characters should be entered in textarea');
-    return false;
+  if(aboutMeTextArea.value.length != 0) {
+    if(aboutMeTextArea.value.length <= this.textAreaMaxLength) {
+      alert('Minimum ' + this.textAreaMaxLength + ' characters should be entered in textarea');
+      return false;
+    }
+    return true;
   }
-  return true;
+  return false;
+};
+
+FormValidator.prototype.capitalizeFirstLetter = function(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
+var formElementsNames = {
+  form: 'form1',
+  checkbox: 'notification',
+  textArea: 'aboutMe',
+  selectBox: 'timezone',
+  textAreaMaxLength: 50
 };
 
 //Object intantiated
-var ValidateFormObject = new ValidateForm("form1","notification","aboutMe","timezone");
-ValidateFormObject.init();
+window.onload = function() {
+  var formValidatorObject = new FormValidator(formElementsNames);
+  formValidatorObject.init();
+};

@@ -6,7 +6,6 @@ function PromptUserName(showContentElement) {
 
 //function to prompt user
 PromptUserName.prototype.promptUserFunction = function() {
-  debugger;
   do {
     this.firstName = prompt('Please enter your First name ','');
   } while(this.firstName == null || this.firstName.trim() == "");

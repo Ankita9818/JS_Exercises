@@ -4,17 +4,20 @@ function PromptUserName(showContentElement) {
   this.lastName = "";
 }
 
-//function to prompt user
-PromptUserName.prototype.promptUser = function() {
-  do {
-    this.firstName = prompt('Please enter your First name ','');
-  } while(!this.firstName || (this.firstName = this.firstName.trim()) == "");
-
-  do {
-    this.lastName = prompt('Please enter your Last name ','');
-  } while(!this.lastName || (this.lastName = this.lastName.trim()) == "");
+//function to initiate prompts
+PromptUserName.prototype.promptInitiator = function() {
+  this.firstName = this.promptUser(this.firstName);
+  this.lastName = this.promptUser(this.lastName);
   this.showContent();
 };
+
+//function to prompt user
+PromptUserName.prototype.promptUser = function(name) {
+  do {
+    name= prompt('Please enter your name ','');
+  } while(!name || (name = name.trim()) == "");
+  return name;
+}
 
 //Function to show alert and welcome content in page
 PromptUserName.prototype.showContent = function() {
@@ -30,5 +33,5 @@ PromptUserName.prototype.capitalizeFirstLetter = function(string) {
 //Object instantiated
 window.onload = function() {
   var promptUserNameObject = new PromptUserName(document.querySelector("[data-label=content]"));
-  promptUserNameObject.promptUser();
+  promptUserNameObject.promptInitiator();
 }

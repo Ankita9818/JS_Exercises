@@ -14,7 +14,7 @@ PromptUserName.prototype.promptInitiator = function() {
 //function to prompt user
 PromptUserName.prototype.promptUser = function(name) {
   do {
-    name= prompt('Please enter your name ','');
+    name = prompt('Please enter your name ','');
   } while(!name || (name = name.trim()) == "");
   return name;
 }

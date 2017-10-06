@@ -6,15 +6,16 @@ function PromptUserName(showContentElement) {
 
 //function to initiate prompts
 PromptUserName.prototype.promptInitiator = function() {
-  this.firstName = this.promptUser(this.firstName);
-  this.lastName = this.promptUser(this.lastName);
+  this.firstName = this.promptUser("Please enter your First name");
+  this.lastName = this.promptUser("Please enter your Last name");
   this.showContent();
 };
 
 //function to prompt user
-PromptUserName.prototype.promptUser = function(name) {
+PromptUserName.prototype.promptUser = function(promptMessage) {
+  var name;
   do {
-    name = prompt('Please enter your name ','');
+    name = prompt(promptMessage,'');
   } while(!name || (name = name.trim()) == "");
   return name;
 }

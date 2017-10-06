@@ -34,7 +34,7 @@ FormValidator.prototype.validateEmptyFields = function() {
   var emptyFields = false;
   var emptyAlertMessage = '';
   for(var formField of this.formElement.elements) {
-    if (formField.value == "") {
+    if (formField.value.trim() == "") {
       emptyAlertMessage = this.capitalizeFirstLetter(formField.name) + ' cant be empty ';
       alert(emptyAlertMessage);
       emptyFields = true;

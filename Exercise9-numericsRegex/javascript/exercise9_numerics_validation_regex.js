@@ -25,7 +25,7 @@ NumericsValidator.prototype.validateNumericalCharacters = function() {
   }
   this.resultFieldElement.value =  valid;
   return valid;
-}
+};
 
 var formElementsNames = {
   form: 'form1',

@@ -21,11 +21,11 @@ FormValidator.prototype.init = function(){
 
 //Function to check validity constraints
 FormValidator.prototype.formValidationFunction = function(event) {
-  var valid = true;
-  valid = this.validateEmptyFields();
-  valid = this.validateEmptySelectBox();
-  valid = this.validateUncheckedNotificationCheckbox();
-  valid = this.validateTextAreaLength();
+  var validFields = this.validateEmptyFields();
+  var validSelectbox= this.validateEmptySelectBox();
+  var validTextAreaLength = this.validateTextAreaLength();
+  var validCheckbox = this.validateUncheckedNotificationCheckbox();
+  var valid = validFields && validSelectbox && validCheckbox && validTextAreaLength;
   return valid;
 };
 

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <script type="text/javascript" src="javascript/exercise8_email_validation.js"></script>
+  <title>JS Validated Form</title>
+</head>
+<body>
+  <div class="container">
+    <h2 class="textcenter header">Registration Form</h2>
+    <form class="form" name="form1" method="post">
+      <label class="inputLabels font-bold" for="loginId">Login Id</label>
+      <input class="inputs" type="number" id="loginId" name="loginId" min="1" step="1"><br>
+      <label class="inputLabels font-bold" for="mail">Email</label>
+      <input class="inputs" type="text" id="mail" name="mail"><br>
+      <label class="inputLabels font-bold" for="name">Name</label>
+      <input class="inputs" type="text" id="name" name="name"><br>
+      <label class="inputLabels font-bold" for="timezone">Timezone</label>
+      <select id="timezone" class="inputLabels font-bold" name="timezone">
+        <option>Choose timezone</option>
+        <option>GMT</option>
+        <option>GST</option>
+        <option>FKT</option>
+        <option>FNT</option>
+      </select><br>
+      <label class="inputLabels font-bold" for="homepage">Home Page</label>
+      <input class="inputs" type="text" id="homepage" name="homepage"><br>
+      <label class="inputLabels font-bold" for="aboutMe">About Me</label><br>
+      <textarea class="textarea" id="aboutMe" rows="10" name="aboutMe"></textarea><br>
+      <input type="checkbox" id="notification" name="notification">
+      <label for="notification" class="font-bold">Receive notifications of comments</label><br>
+      <p>You will be sent an email when someone posts comments to your Blog or Album.</p>
+      <p class="textcenter">Your password will be mailed to you.</p>
+      <input type="submit" name="submit" class="btn-go" value="Go">
+    </form>
+  </div>
+</body>
+</html>

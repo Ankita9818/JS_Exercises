@@ -20,17 +20,16 @@ NumericsValidator.prototype.init = function(){
 //Function which validates that input has only numeric characters
 NumericsValidator.prototype.validateNumericalCharacters = function() {
   var validNumericRegEx = /^\d+\.?\d+$/;
-  return (this.numberFieldElement.value.match(validNumericRegEx)) ? true : false;
-};
-
-var options = {
-  form: 'form1',
-  numberField: 'numberInput',
-  resultField: 'result'
+  return (validNumericRegEx.test(this.numberFieldElement.value));
 };
 
 //Object intantiated
 window.addEventListener('load', function() {
+  var options = {
+    form: 'form1',
+    numberField: 'numberInput',
+    resultField: 'result'
+  };
   var numericsValidatorObject = new NumericsValidator(options);
   numericsValidatorObject.init();
 }, false);

@@ -1,4 +1,4 @@
-function CountryTransfer(formElementsNameHash) {
+function ContentShifter(formElementsNameHash) {
   this.formName = formElementsNameHash.formName;
   this.formElement = document.forms[this.formName];
   this.initialSelectBox = this.formElement[formElementsNameHash.initialSelectBoxName];
@@ -8,47 +8,33 @@ function CountryTransfer(formElementsNameHash) {
 }
 
 //function to attach Event Handlers
-CountryTransfer.prototype.init = function() {
-  this.addButton.addEventListener('click', this.transferCountries(this.initialSelectBox, this.finalSelectBox));
-  this.removeButton.addEventListener('click', this.transferCountries(this.finalSelectBox, this.initialSelectBox));
+ContentShifter.prototype.init = function() {
+  var _this = this;
+  this.addButton.addEventListener('click', function() {
+    _this.transferCountries(_this.initialSelectBox, _this.finalSelectBox);
+  });
+  this.removeButton.addEventListener('click', function() {
+    _this.transferCountries(_this.finalSelectBox, _this.initialSelectBox);
+  });
 };
 
-//Function to transfer countries among selectboxes
-CountryTransfer.prototype.transferCountries = function(sourceSelectbox, destinationSelectbox) {
-  var _this = this, selectedCountryOptions = [];
-  return function() {
-    selectedCountryOptions = _this.getSelectedOptions(sourceSelectbox);
-    var selectedOptionsIndex = 0;
-    while(selectedCountryOptions[selectedOptionsIndex]) {
-      destinationSelectbox.add(selectedCountryOptions[selectedOptionsIndex]);
-      selectedOptionsIndex++;
-    }
-  };
-};
-
-//Function to get all selected options
-CountryTransfer.prototype.getSelectedOptions = function(selectbox){
-  var selectedCountryOptions = [], option = null;
-  for (var optionIndex = 0, len = selectbox.options.length; optionIndex < len; optionIndex++){
-    option = selectbox.options[optionIndex];
-    if (option.selected){
-      selectedCountryOptions.push(option);
-    }
+ContentShifter.prototype.transferCountries = function(sourceSelectbox, destinationSelectbox) {
+  while(sourceSelectbox.selectedIndex > -1){
+    destinationSelectbox.add(sourceSelectbox.options[sourceSelectbox.selectedIndex]);
   }
-  return selectedCountryOptions;
-};
-
-//Object hash for names of Form
-var formElementsName = {
-  formName: 'formCountries',
-  initialSelectBoxName: 'initialSelectbox',
-  finalSelectBoxName: 'finalSelectbox',
-  addButtonName: 'add',
-  removeButtonName: 'remove'
 };
 
 //Object instantiated
-window.onload = function() {
-  var countryTransferObject = new CountryTransfer(formElementsName);
-  countryTransferObject.init();
-};
+window.addEventListener('load', function() {
+  //Object hash for names of Form
+  var formElementsName = {
+    formName: 'formCountries',
+    initialSelectBoxName: 'initialSelectbox',
+    finalSelectBoxName: 'finalSelectbox',
+    addButtonName: 'add',
+    removeButtonName: 'remove'
+  };
+
+  var contentShifterObject = new ContentShifter(formElementsName);
+  contentShifterObject.init();
+});

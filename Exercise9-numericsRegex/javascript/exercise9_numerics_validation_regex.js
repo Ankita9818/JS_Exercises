@@ -1,15 +1,16 @@
 //Object Constructor
-function NumericsValidator(formElementsNamesHash) {
-  this.formName = formElementsNamesHash.form;
+function NumericsValidator(options) {
+  this.formName = options.form;
   this.formElement = document.forms[this.formName];
-  this.numberFieldElement = this.formElement[formElementsNamesHash.numberField];
-  this.resultFieldElement = this.formElement[formElementsNamesHash.resultField];
+  this.numberFieldElement = this.formElement[options.numberField];
+  this.resultFieldElement = this.formElement[options.resultField];
 }
 
 NumericsValidator.prototype.init = function(){
   var _this = this;
   this.formElement.addEventListener('submit', function(submitEvent) {
     var valid = _this.validateNumericalCharacters();
+    _this.resultFieldElement.value = valid;
     if(!valid) {
       submitEvent.preventDefault();
     }
@@ -19,22 +20,17 @@ NumericsValidator.prototype.init = function(){
 //Function which validates that input has only numeric characters
 NumericsValidator.prototype.validateNumericalCharacters = function() {
   var validNumericRegEx = /^\d+\.?\d+$/;
-  var valid = false;
-  if(this.numberFieldElement.value.match(validNumericRegEx)) {
-    valid = true;
-  }
-  this.resultFieldElement.value =  valid;
-  return valid;
+  return (this.numberFieldElement.value.match(validNumericRegEx)) ? true : false;
 };
 
-var formElementsNames = {
+var options = {
   form: 'form1',
   numberField: 'numberInput',
   resultField: 'result'
 };
 
 //Object intantiated
-window.onload = function() {
-  var numericsValidatorObject = new NumericsValidator(formElementsNames);
+window.addEventListener('load', function() {
+  var numericsValidatorObject = new NumericsValidator(options);
   numericsValidatorObject.init();
-};
+}, false);

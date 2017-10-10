@@ -1,4 +1,4 @@
-function ContentShifter(formElementsNameHash) {
+function CountryTransferManager(formElementsNameHash) {
   this.formName = formElementsNameHash.formName;
   this.formElement = document.forms[this.formName];
   this.initialSelectBox = this.formElement[formElementsNameHash.initialSelectBoxName];
@@ -8,7 +8,7 @@ function ContentShifter(formElementsNameHash) {
 }
 
 //function to attach Event Handlers
-ContentShifter.prototype.init = function() {
+CountryTransferManager.prototype.init = function() {
   var _this = this;
   this.addButton.addEventListener('click', function() {
     _this.transferCountries(_this.initialSelectBox, _this.finalSelectBox);
@@ -18,7 +18,7 @@ ContentShifter.prototype.init = function() {
   });
 };
 
-ContentShifter.prototype.transferCountries = function(sourceSelectbox, destinationSelectbox) {
+CountryTransferManager.prototype.transferCountries = function(sourceSelectbox, destinationSelectbox) {
   while(sourceSelectbox.selectedIndex > -1){
     destinationSelectbox.add(sourceSelectbox.options[sourceSelectbox.selectedIndex]);
   }
@@ -35,6 +35,6 @@ window.addEventListener('load', function() {
     removeButtonName: 'remove'
   };
 
-  var contentShifterObject = new ContentShifter(formElementsName);
-  contentShifterObject.init();
+  var countryTransferManagerObject = new CountryTransferManager(formElementsName);
+  countryTransferManagerObject.init();
 });

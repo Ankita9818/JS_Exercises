@@ -21,7 +21,7 @@ FormValidator.prototype.init = function() {
 };
 
 //Function to check validity constraints
-FormValidator.prototype.validateAllFields = function(event) {
+FormValidator.prototype.validateAllFields = function() {
   this.errorMessages = [];
   var validNonEmptyFields = this.validateEmptyFields(),
     validSelectbox= this.validateEmptySelectBox(),

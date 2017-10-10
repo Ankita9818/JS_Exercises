@@ -11,36 +11,36 @@ function FormValidator(formElementsNamesHash) {
 }
 
 //Function to handle submit event
-FormValidator.prototype.init = function(){
+FormValidator.prototype.init = function() {
   var _this = this;
   this.formElement.addEventListener('submit', function(submitEvent) {
-    var formFieldsValidity = _this.formValidationFunction();
-    if(!formFieldsValidity) {
+    var validFields = _this.validateAllFields();
+    if(!validFields) {
       submitEvent.preventDefault();
+      _this.errorMessages.forEach(_this.displayErrors);
     }
   });
 };
 
 //Function to check validity constraints
-FormValidator.prototype.formValidationFunction = function(event) {
-  var validFields = this.validateEmptyFields();
-  var validSelectbox= this.validateEmptySelectBox();
-  var validCheckbox = this.validateUncheckedNotificationCheckbox();
-  var validTextAreaLength = this.validateTextAreaLength();
-  var validEmail = this.validateEmail();
-  var validUrl = this.validateUrl();
-  var valid = validFields && validSelectbox && validCheckbox && validTextAreaLength && validEmail && validUrl;
+FormValidator.prototype.validateAllFields = function() {
+  this.errorMessages = [];
+  var validNonEmptyFields = this.validateEmptyFields(),
+    validSelectbox= this.validateEmptySelectBox(),
+    validCheckbox = this.validateUncheckedNotificationCheckbox(),
+    validTextAreaLength = this.validateTextAreaLength(),
+    validEmail = this.validateEmail(),
+    validUrl = this.validateUrl(),
+    valid = validNonEmptyFields && validSelectbox && validCheckbox && validTextAreaLength && validEmail && validUrl;
   return valid;
 };
 
 //Function to check for empty fields
 FormValidator.prototype.validateEmptyFields = function() {
   var emptyFields = false;
-  var emptyAlertMessage = '';
   for(var formField of this.formElement.elements) {
     if (formField.value.trim() == "") {
-      emptyAlertMessage = this.capitalizeFirstLetter(formField.name) + ' cant be empty ';
-      alert(emptyAlertMessage);
+      this.errorMessages[this.errorMessages.length] = this.capitalizeFirstLetter(formField.name) + ' cant be empty ';
       emptyFields = true;
     }
   }
@@ -51,7 +51,7 @@ FormValidator.prototype.validateEmptyFields = function() {
 FormValidator.prototype.validateEmptySelectBox = function() {
   var timezoneSelectBox = this.formElement[this.selectBoxName];
   if(timezoneSelectBox.selectedIndex <= 0) {
-    alert(this.capitalizeFirstLetter(timezoneSelectBox.name) + ' cant be empty');
+    this.errorMessages[this.errorMessages.length] = this.capitalizeFirstLetter(timezoneSelectBox.name) + ' cant be empty';
     return false;
   }
   return true;
@@ -61,7 +61,7 @@ FormValidator.prototype.validateEmptySelectBox = function() {
 FormValidator.prototype.validateUncheckedNotificationCheckbox = function() {
   var notificationCheckbox = this.formElement[this.checkboxName];
   if (!notificationCheckbox.checked)  {
-    alert('Please check the checkbox to receive notifications');
+    this.errorMessages[this.errorMessages.length] = 'Please check the checkbox to receive notifications';
     return false;
   }
   return true;
@@ -72,7 +72,7 @@ FormValidator.prototype.validateTextAreaLength = function() {
   var aboutMeTextArea = this.formElement[this.textAreaName];
   if(aboutMeTextArea.value.length != 0) {
     if(aboutMeTextArea.value.length <= this.textAreaMaxLength) {
-      alert('Minimum ' + this.textAreaMaxLength + ' characters should be entered in textarea');
+      this.errorMessages[this.errorMessages.length] = 'Minimum ' + this.textAreaMaxLength + ' characters should be entered in textarea';
       return false;
     }
     return true;
@@ -82,14 +82,13 @@ FormValidator.prototype.validateTextAreaLength = function() {
 
 //function to validate email format
 FormValidator.prototype.validateEmail = function() {
-  var emailElement = this.formElement[this.emailFieldName];
-  var emailValid = /^[_a-zA-Z0-9]+(\.[_a-zA-Z0-9]+)*@[a-z0-9]+(\.[a-zA-Z0-9]+)*(\.[a-z]{2,4})$/;
+  var emailElement = this.formElement[this.emailFieldName],
+    emailRegEx = /^[_a-zA-Z0-9]+(\.[_a-zA-Z0-9]+)*@[a-z0-9]+(\.[a-zA-Z0-9]+)*(\.[a-z]{2,4})$/;
   if(emailElement.value.trim() != "") {
-    if(emailElement.value.match(emailValid)) {
-      alert("The Email is valid");
+    if(emailElement.value.match(emailRegEx)) {
       return true;
     } else {
-      alert("The Email is invalid");
+      this.errorMessages[this.errorMessages.length] = 'The Email is invalid';
       return false;
     }
   }
@@ -97,14 +96,13 @@ FormValidator.prototype.validateEmail = function() {
 
 //function to validate url format
 FormValidator.prototype.validateUrl = function() {
-  var urlElement = this.formElement[this.urlFieldName];
-  var urlvalid = /^(((http[s]?)|(ftp)):\/\/)?(www\.)?[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,}[\/]?/;
+  var urlElement = this.formElement[this.urlFieldName],
+    urlRegEx = /^(((http[s]?)|(ftp)):\/\/)?(www\.)?[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,}[\/]?/;
   if(urlElement.value.trim() != "") {
-    if(urlElement.value.match(urlvalid)) {
-      alert("The Url is valid");
+    if(urlElement.value.match(urlRegEx)) {
       return true;
     } else {
-      alert("The Url is invalid");
+      this.errorMessages[this.errorMessages.length] = 'The Url is invalid';
       return false;
     }
   }
@@ -114,18 +112,22 @@ FormValidator.prototype.capitalizeFirstLetter = function(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
-var formElementsNames = {
-  form: 'form1',
-  checkbox: 'notification',
-  textArea: 'aboutMe',
-  selectBox: 'timezone',
-  emailField: 'mail',
-  urlField: 'homepage',
-  textAreaMaxLength: 50
+//Funtion to display all errors
+FormValidator.prototype.displayErrors = function(errorMessage) {
+  alert(errorMessage);
 };
 
 //Object intantiated
 window.onload = function() {
+  var formElementsNames = {
+    form: 'form1',
+    checkbox: 'notification',
+    textArea: 'aboutMe',
+    selectBox: 'timezone',
+    emailField: 'mail',
+    urlField: 'homepage',
+    textAreaMaxLength: 50
+  };
   var formValidatorObject = new FormValidator(formElementsNames);
   formValidatorObject.init();
 };

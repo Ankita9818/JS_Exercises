@@ -82,8 +82,7 @@ FormValidator.prototype.validateTextAreaLength = function() {
 
 //function to validate email format
 FormValidator.prototype.validateEmail = function() {
-  var email = this.formElement[this.emailFieldName].value.trim(),
-    emailRegEx = /^[_a-zA-Z0-9]+(\.[_a-zA-Z0-9]+)*@[a-z0-9]+(\.[a-zA-Z0-9]+)*(\.[a-z]{2,4})$/;
+  var email = this.formElement[this.emailFieldName].value.trim();
   if(email != "" && email.match(emailRegEx)) {
     return true;
   } else {
@@ -94,8 +93,7 @@ FormValidator.prototype.validateEmail = function() {
 
 //function to validate url format
 FormValidator.prototype.validateUrl = function() {
-  var url = this.formElement[this.urlFieldName].value.trim(),
-    urlRegEx = /^(((http[s]?)|(ftp)):\/\/)?(www\.)?[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,}[\/]?/;
+  var url = this.formElement[this.urlFieldName].value.trim();
   if(url != "" && url.match(urlRegEx)) {
     return true;
   } else {
@@ -112,6 +110,10 @@ FormValidator.prototype.capitalizeFirstLetter = function(string) {
 FormValidator.prototype.displayErrors = function(errorMessage) {
   alert(errorMessage);
 };
+
+//Global Regular expression constants
+const emailRegEx = /^[_a-zA-Z0-9]+(\.[_a-zA-Z0-9]+)*@[a-z0-9]+(\.[a-zA-Z0-9]+)*(\.[a-z]{2,4})$/;
+const urlRegEx = /^(((http[s]?)|(ftp)):\/\/)?(www\.)?[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,}[\/]?/;
 
 //Object intantiated
 window.onload = function() {

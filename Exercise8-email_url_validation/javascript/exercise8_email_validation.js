@@ -40,7 +40,7 @@ FormValidator.prototype.validateEmptyFields = function() {
   var emptyFields = false;
   for(var formField of this.formElement.elements) {
     if (formField.value.trim() == "") {
-      this.errorMessages[this.errorMessages.length] = this.capitalizeFirstLetter(formField.name) + ' cant be empty ';
+      this.errorMessages.push(this.capitalizeFirstLetter(formField.name) + ' cant be empty ');
       emptyFields = true;
     }
   }
@@ -51,7 +51,7 @@ FormValidator.prototype.validateEmptyFields = function() {
 FormValidator.prototype.validateEmptySelectBox = function() {
   var timezoneSelectBox = this.formElement[this.selectBoxName];
   if(timezoneSelectBox.selectedIndex <= 0) {
-    this.errorMessages[this.errorMessages.length] = this.capitalizeFirstLetter(timezoneSelectBox.name) + ' cant be empty';
+    this.errorMessages.push(this.capitalizeFirstLetter(timezoneSelectBox.name) + ' cant be empty');
     return false;
   }
   return true;
@@ -61,7 +61,7 @@ FormValidator.prototype.validateEmptySelectBox = function() {
 FormValidator.prototype.validateUncheckedNotificationCheckbox = function() {
   var notificationCheckbox = this.formElement[this.checkboxName];
   if (!notificationCheckbox.checked)  {
-    this.errorMessages[this.errorMessages.length] = 'Please check the checkbox to receive notifications';
+    this.errorMessages.push('Please check the checkbox to receive notifications');
     return false;
   }
   return true;
@@ -72,7 +72,7 @@ FormValidator.prototype.validateTextAreaLength = function() {
   var aboutMeTextArea = this.formElement[this.textAreaName];
   if(aboutMeTextArea.value.length != 0) {
     if(aboutMeTextArea.value.length <= this.textAreaMaxLength) {
-      this.errorMessages[this.errorMessages.length] = 'Minimum ' + this.textAreaMaxLength + ' characters should be entered in textarea';
+      this.errorMessages.push('Minimum ' + this.textAreaMaxLength + ' characters should be entered in textarea');
       return false;
     }
     return true;
@@ -82,29 +82,25 @@ FormValidator.prototype.validateTextAreaLength = function() {
 
 //function to validate email format
 FormValidator.prototype.validateEmail = function() {
-  var emailElement = this.formElement[this.emailFieldName],
+  var email = this.formElement[this.emailFieldName].value.trim(),
     emailRegEx = /^[_a-zA-Z0-9]+(\.[_a-zA-Z0-9]+)*@[a-z0-9]+(\.[a-zA-Z0-9]+)*(\.[a-z]{2,4})$/;
-  if(emailElement.value.trim() != "") {
-    if(emailElement.value.match(emailRegEx)) {
-      return true;
-    } else {
-      this.errorMessages[this.errorMessages.length] = 'The Email is invalid';
-      return false;
-    }
+  if(email != "" && email.match(emailRegEx)) {
+    return true;
+  } else {
+    this.errorMessages.push('The Email is invalid');
+    return false;
   }
 };
 
 //function to validate url format
 FormValidator.prototype.validateUrl = function() {
-  var urlElement = this.formElement[this.urlFieldName],
+  var url = this.formElement[this.urlFieldName].value.trim(),
     urlRegEx = /^(((http[s]?)|(ftp)):\/\/)?(www\.)?[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,}[\/]?/;
-  if(urlElement.value.trim() != "") {
-    if(urlElement.value.match(urlRegEx)) {
-      return true;
-    } else {
-      this.errorMessages[this.errorMessages.length] = 'The Url is invalid';
-      return false;
-    }
+  if(url != "" && url.match(urlRegEx)) {
+    return true;
+  } else {
+    this.errorMessages.push('The Url is invalid');
+    return false;
   }
 };
 

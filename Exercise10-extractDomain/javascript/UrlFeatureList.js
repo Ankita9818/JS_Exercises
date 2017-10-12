@@ -22,7 +22,7 @@ UrlFeatureList.prototype.init = function(){
 //Function to extract domain
 UrlFeatureList.prototype.extractDomain = function(url) {
   return domainRegex.exec(url);
-}
+};
 
 //function to validate url format
 UrlFeatureList.prototype.validateUrl = function(url) {

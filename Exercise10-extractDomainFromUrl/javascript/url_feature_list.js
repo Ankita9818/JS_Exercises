@@ -29,11 +29,11 @@ UrlFeatureList.prototype.extractDomain = function(url) {
 
 //function to validate url format
 UrlFeatureList.prototype.validateUrl = function(url) {
-  return (url != "" && URL_REGEX.test(url) && URL_REGEX.exec(url)[2].length <= 253);
+  return (url != "" && URL_REGEX.test(url) && URL_REGEX.exec(url)[1].length <= 253);
 };
 
 //Global constant for regular expressions
-const URL_REGEX = /^http(s)?:\/\/((www\.)?([a-z0-9]{1,63}([\-\.]{1}[a-z0-9]{1,63})*\.[a-z]{2,5}))(:[0-9]{1,5})?(\/(\w+[\-\.\/]?)+)*$/;
+const URL_REGEX = /^(?:http[s]?:\/\/)?((www\.)?([a-z0-9]{1,63}([\-\.]{1}[a-z0-9]{1,63})*\.[a-z]{2,5}))(:[0-9]{1,5})?(\/(\w+[\-\.\/]?)+)*$/;
 const DOMAIN_REGEX = /((\w*)(?:\.))?((\w*(?:\.))+([^\/]*))/;
 
 //Object intantiated

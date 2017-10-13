@@ -12,14 +12,13 @@ UrlFeatureList.prototype.init = function(){
 };
 
 UrlFeatureList.prototype.domainExtractor = function(url,submitEvent) {
-   submitEvent.preventDefault();
   if(this.validateUrl(url)) {
     var domain  = this.extractDomain(url);
     (domain[2]) ? domainMessage = 'Domain : ' + domain[3] + '\nSubdomain : ' + domain[2] : domainMessage = 'Domain : ' + domain[3];
     alert(domainMessage);
   } else {
     alert('Please enter a valid url');
-
+    submitEvent.preventDefault();
   }
 }
 

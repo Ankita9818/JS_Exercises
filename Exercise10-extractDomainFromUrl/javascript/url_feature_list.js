@@ -1,7 +1,7 @@
 //Object Constructor
-function UrlFeatureList(options) {
-  this.formElement = document.forms[options.form];
-  this.url = this.formElement[options.urlField];
+function UrlFeatureList(form,urlField) {
+  this.formElement = form;
+  this.url = urlField;
 }
 
 UrlFeatureList.prototype.init = function(){
@@ -14,7 +14,7 @@ UrlFeatureList.prototype.init = function(){
 UrlFeatureList.prototype.domainExtractor = function(url,submitEvent) {
   if(this.validateUrl(url)) {
     var domain  = this.extractDomain(url);
-    (domain[2]) ? domainMessage = 'Domain : ' + domain[3] + '\nSubdomain : ' + domain[2] : domainMessage = 'Domain : ' + domain[3];
+    domainMessage = (domain[2]) ? 'Domain : ' + domain[3] + '\nSubdomain : ' + domain[2] : 'Domain : ' + domain[3];
     alert(domainMessage);
   } else {
     alert('Please enter a valid url');
@@ -33,15 +33,11 @@ UrlFeatureList.prototype.validateUrl = function(url) {
 };
 
 //Global constant for regular expressions
-const URL_REGEX = /^(?:http[s]?:\/\/)?((www\.)?([a-z0-9]{1,63}([\-\.]{1}[a-z0-9]{1,63})*\.[a-z]{2,5}))(:[0-9]{1,5})?(\/(\w+[\-\.\/]?)+)*$/;
+const URL_REGEX = /^(?:http[s]?:\/\/)?((www\.)?([a-z0-9]{1,63}([\-\.]{1}[a-z0-9]{1,63})*\.[a-z]{2,}))(:[0-9]{1,5})?(\/(\w+[\-\.\/]?)+)*$/;
 const DOMAIN_REGEX = /((\w*)(?:\.))?((\w*(?:\.))+([^\/]*))/;
 
 //Object intantiated
 window.addEventListener('load', function() {
-  var options = {
-    form: 'form1',
-    urlField: 'urlInput'
-  };
-  var urlFeatureListObject = new UrlFeatureList(options);
+  var urlFeatureListObject = new UrlFeatureList(document.querySelector("[data-label=form_url]"),document.querySelector("[data-label=urlInput]"));
   urlFeatureListObject.init();
 }, false);
